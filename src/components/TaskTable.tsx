@@ -1,19 +1,7 @@
 import React from "react";
 import { Table } from "antd";
 import type { TableColumnsType, TableProps } from "antd";
-
-type TaskStatus = "Open" | "In-Progress" | "Under-review" | "Done";
-type TaskPriority = "Low" | "Medium" | "High";
-
-interface Task {
-  id: string;
-  title: string;
-  assignedTo: string;
-  status: TaskStatus;
-  priority: TaskPriority;
-  startDate: string;
-  endDate?: string;
-}
+import { Task } from "../types";
 
 const columns: TableColumnsType<Task> = [
   {
