@@ -1,12 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
+import tasksReducer from "./tasks/taskSlice";
 
 export const store = configureStore({
   reducer: {
-    tasks: () => [
-      {
-        title: "sfsdf",
-      },
-    ],
+    task: tasksReducer,
   },
 });
 
