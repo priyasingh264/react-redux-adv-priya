@@ -1,7 +1,7 @@
 import { Button, Col, Row } from "antd";
-import "./Header.css";
 import { useState } from "react";
 import CreateTaskModal from "./CreateTaskModal";
+import "./Header.css";
 
 export default function Header() {
   const [showCreateTaskModal, setShowCreateTaskModal] = useState(false);
@@ -19,7 +19,7 @@ export default function Header() {
         </Col>
       </Row>
       <CreateTaskModal
-        visible={showCreateTaskModal}
+        open={showCreateTaskModal}
         onCancel={() => setShowCreateTaskModal(false)}
       />
     </nav>

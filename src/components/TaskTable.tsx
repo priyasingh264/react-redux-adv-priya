@@ -1,60 +1,30 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Table } from "antd";
-import type { TableColumnsType, TableProps } from "antd";
-import { Task } from "../types";
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
+import { getTasksAction } from "../store/tasks/thunk";
+import { useAppDispatch } from "../hooks";
+import { useTaskTable } from "../hooks/useTaskTable";
 
-const columns: TableColumnsType<Task> = [
-  {
-    title: "Title",
-    dataIndex: "title",
-    sorter: (a, b) => a.title.localeCompare(b.title),
-  },
-  {
-    title: "Assigned To",
-    dataIndex: "assignedTo",
-    sorter: (a, b) => a.assignedTo.localeCompare(b.assignedTo),
-  },
-  {
-    title: "Status",
-    dataIndex: "status",
-  },
-];
+const TaskTable: React.FC = () => {
+  const dispatch = useAppDispatch();
 
-const taskData: Task[] = [
-  {
-    id: "task1",
-    title: "Task 1",
-    assignedTo: "task@gmail.com",
-    status: "Open",
-    priority: "Low",
-    startDate: "12/12/2024",
-  },
-  {
-    id: "task2",
-    title: "Task 2",
-    assignedTo: "task2@gmail.com",
-    status: "In-Progress",
-    priority: "Low",
-    startDate: "14/12/2024",
-  },
-];
+  useEffect(() => {
+    dispatch(getTasksAction());
+  }, [dispatch]);
 
-const onChange: TableProps<Task>["onChange"] = (
-  pagination,
-  filters,
-  sorter,
-  extra
-) => {
-  console.log("params", pagination, filters, sorter, extra);
+  const { columns } = useTaskTable();
+
+  const { data, isLoading } = useSelector((state: RootState) => state.task);
+
+  return (
+    <Table
+      columns={columns}
+      dataSource={data}
+      showSorterTooltip={{ target: "sorter-icon" }}
+      loading={isLoading}
+    />
+  );
 };
-
-const TaskTable: React.FC = () => (
-  <Table
-    columns={columns}
-    dataSource={taskData}
-    onChange={onChange}
-    showSorterTooltip={{ target: "sorter-icon" }}
-  />
-);
 
 export default TaskTable;

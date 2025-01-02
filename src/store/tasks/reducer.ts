@@ -1,61 +1,105 @@
-// import { createSlice } from "@reduxjs/toolkit";
 import { Task } from "../../types";
+import { TaskAction, taskActions } from "./actions";
 
 interface TaskInitialState {
   data: Task[];
   isLoading: boolean;
   hasError: boolean;
+  isTaskCreating: boolean;
+  isTaskEditing: boolean;
+  isTaskDeleting: boolean;
+  isTaskDetailLoading: boolean;
+  taskDetail: Task | null;
 }
 
 const initialState: TaskInitialState = {
   data: [],
   isLoading: false,
   hasError: false,
+  isTaskCreating: false,
+  isTaskEditing: false,
+  isTaskDeleting: false,
+  isTaskDetailLoading: false,
+  taskDetail: null,
 };
 
-// const taskSlice = createSlice({
-//   name: "tasks",
-//   initialState,
-//   reducers: {
-//     createTask: (args) => {
-//       console.log(args);
-//     },
-//   },
-// });
+export default function taskReducer(state = initialState, action: TaskAction) {
+  console.log(action);
 
-// export const { createTask } = taskSlice.actions;
+  switch (action.type) {
+    case taskActions.CREATE_TASK_REQUEST:
+      return {
+        ...state,
+        isTaskCreating: true,
+      };
 
-// export default taskSlice.reducer;
+    case taskActions.CREATE_TASK_SUCCESS:
+      console.log(action);
+      return {
+        ...state,
+        isTaskCreating: false,
+        taskDetail: action.payload,
+      };
 
-export default function taskReducer(state = initialState, action){
+    case taskActions.EDIT_TASK_REQUEST:
+      return {
+        ...state,
+        isTaskEditing: true,
+      };
 
- switch(action.type) {
-  case "task/edit": 
-    console.log("edit task")
-    return {
-      ...state
+    case taskActions.EDIT_TASK_SUCCESS:
+      return {
+        ...state,
+        isTaskEditing: false,
+      };
+
+    case taskActions.DELETE_TASK_REQUEST:
+      return {
+        ...state,
+        isTaskDeleting: true,
+      };
+
+    case taskActions.DELETE_TASK_SUCCESS:
+      return {
+        ...state,
+        isTaskDeleting: false,
+      };
+
+    case taskActions.FETCH_ALL_TASKS_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+      };
+
+    case taskActions.FETCH_ALL_TASKS_SUCCESS: {
+      return {
+        ...state,
+        isLoading: false,
+        data: action.payload.tasks,
+      };
     }
 
-  case "task/delete": 
-    console.log("delete task")
-    return {
-      ...state
-    }
+    case taskActions.FETCH_ALL_TASKS_FAILURE:
+      return {
+        ...state,
+        isLoading: false,
+        hasError: true,
+      };
 
-  case "tasks/loading":
-    return {
-      ...state,
-      isLoading: true
-    }
-  
-  case "tasks/loaded":
-    return {
-      ...state,
-      isLoading: false,
-      data: action.payload
-    }
+    case taskActions.FETCH_TASK_BY_ID_REQUEST:
+      return {
+        ...state,
+        isTaskDetailLoading: true,
+      };
 
-  default:
-    return state;
- }
+    case taskActions.FETCH_TASK_BY_ID_SUCCESS:
+      return {
+        ...state,
+        isTaskDetailLoading: false,
+        taskDetail: action.payload.task,
+      };
+
+    default:
+      return state;
+  }
 }

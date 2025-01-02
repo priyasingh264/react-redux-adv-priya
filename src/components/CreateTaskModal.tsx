@@ -1,40 +1,65 @@
 import React from "react";
-import { Modal, Form, Input, DatePicker, Select, Row, Col } from "antd";
+import { Modal, Form, Input, DatePicker, Select, Row, Col, Button } from "antd";
+import { useAppDispatch } from "../hooks";
+import { createTaskAction } from "../store/tasks/thunk";
+import { v4 as uuidv4 } from "uuid";
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
 
 const { Option } = Select;
 
 interface CreateTaskModalProps {
-  visible: boolean;
+  open: boolean;
   onCancel: () => void;
 }
 
 const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
-  visible,
+  open,
   onCancel,
 }) => {
+  const dispatch = useAppDispatch();
   const [form] = Form.useForm();
-  const onCreate = (values: any) => {
-    console.log(values);
+  const { isTaskCreating } = useSelector((state: RootState) => state.task);
+
+  const handleCreate = () => {
+    form
+      .validateFields()
+      .then(async values => {
+        const newTask = {
+          ...values,
+          id: uuidv4(),
+        };
+
+        await dispatch(createTaskAction(newTask));
+        form.resetFields();
+        onCancel();
+      })
+      .catch(info => {
+        console.log("Validate Failed:", info);
+      });
   };
 
   return (
     <Modal
-      visible={visible}
+      open={open}
       title="Create a new task"
       okText="Create"
       cancelText="Cancel"
       onCancel={onCancel}
-      onOk={() => {
-        form
-          .validateFields()
-          .then((values) => {
-            onCreate(values);
-            form.resetFields();
-          })
-          .catch((info) => {
-            console.log("Validate Failed:", info);
-          });
-      }}
+      onOk={handleCreate}
+      footer={[
+        <Button key="back" onClick={onCancel}>
+          Cancel
+        </Button>,
+        <Button
+          key="submit"
+          type="primary"
+          loading={isTaskCreating}
+          onClick={handleCreate}
+        >
+          Create
+        </Button>,
+      ]}
     >
       <Form form={form} layout="vertical" name="create_task_form">
         <Form.Item
@@ -97,11 +122,6 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
                 { required: true, message: "Please select the start date!" },
               ]}
             >
-              <DatePicker />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item name="endDate" label="End Date">
               <DatePicker />
             </Form.Item>
           </Col>
