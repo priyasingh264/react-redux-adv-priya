@@ -10,7 +10,6 @@ interface CreateTaskModalProps {
 
 const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
   visible,
-
   onCancel,
 }) => {
   const [form] = Form.useForm();
@@ -29,8 +28,8 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
         form
           .validateFields()
           .then((values) => {
-            form.resetFields();
             onCreate(values);
+            form.resetFields();
           })
           .catch((info) => {
             console.log("Validate Failed:", info);
@@ -102,13 +101,7 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Form.Item
-              name="endDate"
-              label="End Date"
-              rules={[
-                { required: true, message: "Please select the end date!" },
-              ]}
-            >
+            <Form.Item name="endDate" label="End Date">
               <DatePicker />
             </Form.Item>
           </Col>
