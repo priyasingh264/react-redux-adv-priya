@@ -23,6 +23,10 @@ const TaskTable: React.FC = () => {
       dataSource={data}
       showSorterTooltip={{ target: "sorter-icon" }}
       loading={isLoading}
+      rowClassName={"cursor-pointer"}
+      pagination={{
+        hideOnSinglePage: true,
+      }}
     />
   );
 };

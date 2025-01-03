@@ -1,26 +1,55 @@
 import { Server, Model } from "miragejs"; // Import MirageJS components
 import { Task } from "../types";
 
-// Sample array of tasks
 const tasksArray: Task[] = [
   {
-    id: "1",
     title: "Task 1",
-    assignedTo: "User A",
-    status: "in-progress", // Example status
-    priority: "high", // Example priority
-    startDate: "2023-01-01",
-    endDate: "2023-01-02",
+    assignedTo: "task1@gmail.com",
+    status: "OPEN",
+    priority: "LOW",
+    startDate: "25Dec2024",
+    id: "5b922c63-7195-4d97-a294-f9c8c92fc601",
   },
   {
-    id: "2",
     title: "Task 2",
-    assignedTo: "User B",
-    status: "done",
-    priority: "medium",
-    startDate: "2023-01-03",
+    assignedTo: "task2@gmail.com",
+    status: "IN_PROGRESS",
+    priority: "MEDIUM",
+    startDate: "26Dec2024",
+    id: "5b922c63-7195-4d97-a294-f9c8c92fc602",
   },
-  // Add more tasks as needed
+  {
+    title: "Task 3",
+    assignedTo: "task3@gmail.com",
+    status: "DONE",
+    priority: "HIGH",
+    startDate: "27Dec2024",
+    id: "5b922c63-7195-4d97-a294-f9c8c92fc603",
+  },
+  {
+    title: "Task 4",
+    assignedTo: "task4@gmail.com",
+    status: "UNDER_REVIEW",
+    priority: "HIGH",
+    startDate: "28Dec2024",
+    id: "5b922c63-7195-4d97-a294-f9c8c92fc604",
+  },
+  {
+    title: "Task 5",
+    assignedTo: "task5@gmail.com",
+    status: "OPEN",
+    priority: "LOW",
+    startDate: "29Dec2024",
+    id: "5b922c63-7195-4d97-a294-f9c8c92fc605",
+  },
+  {
+    title: "Task 6",
+    assignedTo: "task6@gmail.com",
+    status: "IN_PROGRESS",
+    priority: "MEDIUM",
+    startDate: "30Dec2024",
+    id: "5b922c63-7195-4d97-a294-f9c8c92fc606",
+  },
 ];
 
 // Set up MirageJS server

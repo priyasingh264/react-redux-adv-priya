@@ -1,5 +1,18 @@
-export type TaskStatus = "open" | "in-progress" | "under-review" | "done";
-export type TaskPriority = "low" | "medium" | "high";
+export enum TaskStatusEnum {
+  OPEN = "OPEN",
+  IN_PROGRESS = "IN_PROGRESS",
+  UNDER_REVIEW = "UNDER_REVIEW",
+  DONE = "DONE",
+}
+
+export enum TaskPriorityEnum {
+  LOW = "LOW",
+  MEDIUM = "MEDIUM",
+  HIGH = "HIGH",
+}
+
+export type TaskStatus = `${TaskStatusEnum}`;
+export type TaskPriority = `${TaskPriorityEnum}`;
 
 export interface Task {
   id: string;

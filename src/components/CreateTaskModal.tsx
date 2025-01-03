@@ -5,6 +5,8 @@ import { createTaskAction } from "../store/tasks/thunk";
 import { v4 as uuidv4 } from "uuid";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
+import { TaskPriorityEnum, TaskStatusEnum } from "../types";
+import { TASK_PRIORITY, TASK_STATUS } from "../utils/constants";
 
 const { Option } = Select;
 
@@ -61,7 +63,12 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
         </Button>,
       ]}
     >
-      <Form form={form} layout="vertical" name="create_task_form">
+      <Form
+        form={form}
+        layout="vertical"
+        name="create_task_form"
+        style={{ marginTop: "16px" }}
+      >
         <Form.Item
           name="title"
           label="Task Title"
@@ -92,10 +99,9 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
               rules={[{ required: true, message: "Please select the status!" }]}
             >
               <Select placeholder="Select a status">
-                <Option value="open">Open</Option>
-                <Option value="inProgress">In Progress</Option>
-                <Option value="underReview">Under Review</Option>
-                <Option value="done">Done</Option>
+                {Object.entries(TaskStatusEnum).map(([key, value]) => (
+                  <Option value={key}>{TASK_STATUS[value]}</Option>
+                ))}
               </Select>
             </Form.Item>
           </Col>
@@ -106,9 +112,9 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
               rules={[{ required: true, message: "Please select priority!" }]}
             >
               <Select placeholder="Select a priority">
-                <Option value="low">Low</Option>
-                <Option value="medium">Medium</Option>
-                <Option value="high">High</Option>
+                {Object.entries(TaskPriorityEnum).map(([key, value]) => (
+                  <Option value={key}>{TASK_PRIORITY[value]}</Option>
+                ))}
               </Select>
             </Form.Item>
           </Col>
@@ -122,7 +128,11 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
                 { required: true, message: "Please select the start date!" },
               ]}
             >
-              <DatePicker />
+              <DatePicker
+                format="DDMMMYYYY"
+                placeholder="Select start date"
+                style={{ width: "100%" }}
+              />
             </Form.Item>
           </Col>
         </Row>

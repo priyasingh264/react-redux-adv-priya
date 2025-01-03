@@ -1,15 +1,17 @@
-import { Button, Space, TableColumnsType, Modal } from "antd";
+import { Button, Space, TableColumnsType, Modal, Tag } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import { Task } from "../types";
+import dayjs from "dayjs";
+import { Task, TaskPriority, TaskStatus } from "../types";
 import { useAppDispatch } from ".";
-import { deleteTaskAction, editTaskAction } from "../store/tasks/thunk";
+import { deleteTaskAction } from "../store/tasks/thunk";
 import { useNavigate } from "react-router";
+import { TASK_PRIORITY, TASK_STATUS } from "../utils/constants";
 
 export const useTaskTable = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const handleEdit = (task: Task) => {
-    dispatch(editTaskAction(task));
+    navigate(`/task/${task.id}/edit`);
   };
 
   const handleDelete = (task: Task) => {
@@ -51,6 +53,23 @@ export const useTaskTable = () => {
       key: "status",
       sorter: (a, b) => a.status.localeCompare(b.status),
       onCell,
+      render: (text: TaskStatus) => {
+        return (
+          <Tag
+            color={
+              text === "DONE"
+                ? "green"
+                : text === "OPEN"
+                ? "blue"
+                : text === "IN_PROGRESS"
+                ? "orange"
+                : "red"
+            }
+          >
+            {TASK_STATUS[text]}
+          </Tag>
+        );
+      },
     },
     {
       title: "Priority",
@@ -58,6 +77,17 @@ export const useTaskTable = () => {
       key: "priority",
       sorter: (a, b) => a.priority.localeCompare(b.priority),
       onCell,
+      render: (text: TaskPriority) => {
+        return (
+          <Tag
+            color={
+              text === "HIGH" ? "red" : text === "MEDIUM" ? "orange" : "green"
+            }
+          >
+            {TASK_PRIORITY[text]}
+          </Tag>
+        );
+      },
     },
     {
       title: "Start Date",
@@ -65,14 +95,19 @@ export const useTaskTable = () => {
       key: "startDate",
       sorter: (a, b) => a.startDate.localeCompare(b.startDate),
       onCell,
+      render: (text: string) => {
+        return dayjs(text).format("DDMMMYYYY");
+      },
     },
     {
       title: "End Date",
       dataIndex: "endDate",
       key: "endDate",
       onCell,
+      render: (text: string) => {
+        return text ? dayjs(text).format("DDMMMYYYY") : "-";
+      },
     },
-    // actions
     {
       title: "Actions",
       key: "actions",

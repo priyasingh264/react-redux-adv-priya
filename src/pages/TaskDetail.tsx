@@ -6,19 +6,23 @@ import { useAppDispatch } from "../hooks";
 import { getTaskByIdAction } from "../store/tasks/thunk";
 import { RootState } from "../store";
 import { useSelector } from "react-redux";
+import { Header } from "../components";
+import { TASK_PRIORITY, TASK_STATUS } from "../utils/constants";
+import { TaskPriority } from "../types";
+import { TaskStatus } from "../types";
 
 export default function TaskDetail() {
-  const params = useParams<{ id: string }>();
+  const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
   const { taskDetail, isTaskDetailLoading } = useSelector(
     (state: RootState) => state.task
   );
 
-  console.log(taskDetail, isTaskDetailLoading);
-
   useEffect(() => {
-    dispatch(getTaskByIdAction(params.id));
-  }, [params.id, dispatch]);
+    if (id) {
+      dispatch(getTaskByIdAction(id));
+    }
+  }, [id, dispatch]);
 
   if (isTaskDetailLoading && !taskDetail) {
     return (
@@ -29,27 +33,27 @@ export default function TaskDetail() {
   }
 
   return (
-    <div style={{ padding: "20px" }}>
-      <Row align="middle">
-        {/* <Col span={24}> */}
-        <NavLink to="/">
-          <Button type="link" icon={<ArrowLeftOutlined size={20} />}></Button>
-        </NavLink>
-        <h2>{taskDetail?.title}</h2>
-        {/* </Col> */}
-      </Row>
-      <Row>
+    <div>
+      <Header>
+        <Row align="middle" justify="start">
+          <NavLink to="/">
+            <Button type="link" icon={<ArrowLeftOutlined size={20} />}></Button>
+          </NavLink>
+          <h2>{taskDetail?.title}</h2>
+        </Row>
+      </Header>
+      <Row gutter={16} style={{ padding: "0 24px" }}>
         <Col span={12}>
           <h3>Assigned To</h3>
           <p>{taskDetail?.assignedTo}</p>
         </Col>
         <Col span={12}>
           <h3>Status</h3>
-          <p>{taskDetail?.status}</p>
+          <p>{TASK_STATUS[taskDetail?.status as TaskStatus]}</p>
         </Col>
         <Col span={12}>
           <h3>Priority</h3>
-          <p>{taskDetail?.priority}</p>
+          <p>{TASK_PRIORITY[taskDetail?.priority as TaskPriority]}</p>
         </Col>
         <Col span={12}>
           <h3>Start Date</h3>
@@ -57,7 +61,7 @@ export default function TaskDetail() {
         </Col>
         <Col span={12}>
           <h3>End Date</h3>
-          <p>{taskDetail?.endDate}</p>
+          <p>{taskDetail?.endDate ?? "NA"}</p>
         </Col>
       </Row>
     </div>

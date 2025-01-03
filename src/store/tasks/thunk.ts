@@ -37,7 +37,7 @@ export const editTaskAction =
     await editTask(task);
 
     dispatch({ type: taskActions.EDIT_TASK_SUCCESS, payload: task });
-    dispatch(getTasksAction()); // Fetch updated tasks after editing
+    // dispatch(getTasksAction()); // Fetch updated tasks after editing
   };
 
 export const deleteTaskAction =
