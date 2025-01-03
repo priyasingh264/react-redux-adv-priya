@@ -93,7 +93,6 @@ export const useTaskTable = () => {
       title: "Start Date",
       dataIndex: "startDate",
       key: "startDate",
-      sorter: (a, b) => a.startDate.localeCompare(b.startDate),
       onCell,
       render: (text: string) => {
         return dayjs(text).format("DDMMMYYYY");
