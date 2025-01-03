@@ -2,7 +2,7 @@
 
 ## Demo Video
 
-![Demo Video](public/demo.mp4)
+![Demo Video](https://raw.githubusercontent.com/priyasingh264/react-redux-adv-priya/refs/heads/main/public/task-management-with-redux-demo.mp4)
 
 ## Features
 
