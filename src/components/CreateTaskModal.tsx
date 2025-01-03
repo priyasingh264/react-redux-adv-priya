@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { TaskPriorityEnum, TaskStatusEnum } from "../types";
 import { TASK_PRIORITY, TASK_STATUS } from "../utils/constants";
+import dayjs from "dayjs";
 
 const { Option } = Select;
 
@@ -29,6 +30,7 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
       .then(async values => {
         const newTask = {
           ...values,
+          startDate: dayjs(values.startDate).format("DDMMMYYYY"),
           id: uuidv4(),
         };
 
