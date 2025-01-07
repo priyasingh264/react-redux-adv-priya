@@ -38,6 +38,7 @@ export default function taskReducer(state = initialState, action: TaskAction) {
       return {
         ...state,
         isTaskCreating: false,
+        // @ts-ignore
         taskDetail: action.payload,
       };
 
@@ -75,6 +76,7 @@ export default function taskReducer(state = initialState, action: TaskAction) {
       return {
         ...state,
         isLoading: false,
+        // @ts-ignore
         data: action.payload.tasks,
       };
     }
@@ -96,6 +98,7 @@ export default function taskReducer(state = initialState, action: TaskAction) {
       return {
         ...state,
         isTaskDetailLoading: false,
+        // @ts-ignore
         taskDetail: action.payload.task,
       };
 

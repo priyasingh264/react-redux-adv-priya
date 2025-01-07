@@ -27,7 +27,7 @@ export const createTaskAction =
     dispatch({ type: taskActions.CREATE_TASK_REQUEST });
     await createTask(task);
     dispatch({ type: taskActions.CREATE_TASK_SUCCESS, payload: task });
-    dispatch(getTasksAction()); // Fetch updated tasks after creation
+    dispatch(getTasksAction() as any); // Fetch updated tasks after creation
   };
 
 export const editTaskAction =
@@ -47,7 +47,8 @@ export const deleteTaskAction =
     await deleteTask(task);
 
     dispatch({ type: taskActions.DELETE_TASK_SUCCESS, payload: task });
-    dispatch(getTasksAction()); // Fetch updated tasks after deletion
+
+    dispatch(getTasksAction() as any); // Fetch updated tasks after deletion
   };
 
 export const getTaskByIdAction =

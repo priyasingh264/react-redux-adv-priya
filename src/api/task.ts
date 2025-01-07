@@ -59,13 +59,13 @@ export const setupServer = () => {
       task: Model,
     },
     seeds(server) {
-      tasksArray.forEach(task => server.create("task", task)); // Seed tasks from the array
+      tasksArray.forEach((task) => server.create("task", task)); // Seed tasks from the array
     },
     routes() {
       this.namespace = "api"; // Set the API namespace
 
       // Get all tasks
-      this.get("/tasks", schema => {
+      this.get("/tasks", (schema) => {
         const tasks = schema.all("task"); // Return all tasks
 
         return tasks;
@@ -74,12 +74,14 @@ export const setupServer = () => {
       // Create a new task
       this.post("/tasks", (schema, request) => {
         const attrs = JSON.parse(request.requestBody); // Get the new task data
+        // @ts-ignore
         return schema.tasks.create(attrs); // Create and return the new task
       });
 
       // Get a task by ID
       this.get("/tasks/:id", (schema, request) => {
         const id = request.params.id;
+        // @ts-ignore
         const task = schema.tasks.find(id); // Find the task by ID
         return task; // Return the task
       });
@@ -88,11 +90,13 @@ export const setupServer = () => {
       this.put("/tasks/:id", (schema, request) => {
         const id = request.params.id;
         const attrs = JSON.parse(request.requestBody); // Get the updated task data
+        // @ts-ignore
         const task = schema.tasks.find(id); // Find the task by ID
 
         if (task) {
           return task.update(attrs); // Update the task with new attributes
         } else {
+          // @ts-ignore
           return new Response(404, {}, { error: "Task not found" });
         }
       });
@@ -100,15 +104,16 @@ export const setupServer = () => {
       // Delete a task
       this.delete("/tasks/:id", (schema, request) => {
         const id = request.params.id;
-
+        // @ts-ignore
         const foundTask = schema.tasks.find(id); // Find the task by ID
 
         // console.log("task", foundTask);
         if (foundTask) {
           foundTask.destroy(); // Delete the task
-
+          // @ts-ignore
           return new Response(204); // Return no content response
         } else {
+          // @ts-ignore
           return new Response(404, {}, { error: "Task not found" });
         }
       });
